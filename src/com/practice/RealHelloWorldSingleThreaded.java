@@ -1,30 +1,26 @@
 package com.practice;
 
+import java.util.concurrent.TimeUnit;
+
 public class RealHelloWorldSingleThreaded {
 	
-	public static class Greeter implements Runnable{
-		private String country;
-		public Greeter(String country) {
-			this.country = country;
-		}
-		public void run() {
-			try {
-				Thread.sleep(10000);
-			}catch(InterruptedException e) {
-				
-			}
-			System.out.println("Hello "+country+"!");
-		}
-	}
+	
 
 	public static void main(String[] args) {
-		String countries[] = {"France","India","China","USA","Germany"};
-		
-		for(String country:countries) {
-			Greeter greeter = new Greeter(country);
-			new Thread(greeter,country+"thread").start();
+		Bartender bartender = new Bartender();
+		Thread bartenderThread = new Thread(bartender,"Bartender");
+		bartenderThread.start();
+		try {
+			TimeUnit.SECONDS.sleep(1);
+		}catch(InterruptedException e) {
+			
 		}
-
+		int numCustomers = 5;
+		for(int i=0;i<numCustomers;i++) {
+			String customerName = "Customer"+i;
+			Customer customer = new Customer(bartenderThread,customerName,((int)Math.random()*10));
+			new Thread(customer,customerName).start();
+			}
 	}
 
 }
