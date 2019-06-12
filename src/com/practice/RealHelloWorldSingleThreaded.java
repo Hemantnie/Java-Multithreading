@@ -8,6 +8,11 @@ public class RealHelloWorldSingleThreaded {
 			this.country = country;
 		}
 		public void run() {
+			try {
+				Thread.sleep(10000);
+			}catch(InterruptedException e) {
+				
+			}
 			System.out.println("Hello "+country+"!");
 		}
 	}
